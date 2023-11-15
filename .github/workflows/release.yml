@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest]
+        platform: [macos-latest, ubuntu-20.04, windows-latest]
         include:
           - platform: macos-latest
             rust-targets: 'aarch64-apple-darwin, x86_64-apple-darwin'
@@ -47,3 +47,5 @@ jobs:
           releaseBody: 'See the assets to download and install this version.'
           releaseDraft: false
           prerelease: false
+          updaterJsonKeepUniversal: true
+          updaterJsonPreferNsis: false
