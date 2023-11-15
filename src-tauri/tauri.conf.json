@@ -8,12 +8,16 @@
   },
   "package": {
     "productName": "my-app",
-    "version": "0.1.9"
+    "version": "0.1.7"
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "process": {
+        "all": true
+      }
     },
+
     "bundle": {
       "active": true,
       "category": "DeveloperTool",
