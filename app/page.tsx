@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <p>new update 1.0.18</p>
+      <p>new update 1.0.19</p>
       <p>more content</p>
       <p>pump tauri config version</p>
       <button onClick={() => setCounter((counter) => (counter += 1))}>
