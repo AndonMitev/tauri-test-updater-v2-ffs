@@ -1,5 +1,4 @@
-name: release
-run-name: Release ${{ github.ref_name }}
+name: 'release'
 on:
   push:
     branches:
@@ -8,13 +7,13 @@ on:
       - 'v*'
 
 jobs:
-  release:
+  publish-game-launcher:
     permissions:
       contents: write
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [macos-latest]
         include:
           - platform: macos-latest
             rust-targets: 'aarch64-apple-darwin, x86_64-apple-darwin'
@@ -23,37 +22,29 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
-
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: 18.17.1
-
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.rust-targets }}
-
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-
       - name: install frontend dependencies
         run: yarn install
-
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
-          args: ${{ matrix.tauri-args }}
-          tagName: ${{ github.ref_name }}
-          releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download and install this version.'
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'App v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
           releaseDraft: false
           prerelease: false
-          updaterJsonKeepUniversal: true
-          updaterJsonPreferNsis: false
