@@ -8,13 +8,24 @@
   },
   "package": {
     "productName": "my-app",
-    "version": "0.1.25"
+    "version": "0.1.27"
   },
   "tauri": {
     "allowlist": {
       "all": false,
       "process": {
         "all": true
+      },
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "exists": true,
+        "createDir": true,
+        "readFile": true,
+        "writeFile": true,
+        "removeFile": true,
+        "scope": ["$HOME/**", "$APPCONFIG/**", "$APPLOG/**"]
       }
     },
     "bundle": {

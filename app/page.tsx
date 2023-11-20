@@ -1,11 +1,14 @@
 'use client';
 
 import UpdateToast from '@/components/UpdateToast';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import strongholdStorage from '@/lib/stronhold';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [email, setEmail] = useState('');
   const [counter, setCounter] = useState(0);
   const [showToast, setShowToast] = useState(false);
 
@@ -36,13 +39,32 @@ export default function Home() {
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
-      <p>new update 1.0.25</p>
+      <p>new update 0.1.27</p>
       <p>more content</p>
       <p>pump tauri config version</p>
       <button onClick={() => setCounter((counter) => (counter += 1))}>
         Click me
       </button>
       <p className='text-white'>Counter: {counter}</p>
+      <Button
+        onClick={async () => {
+          await strongholdStorage.save('email', 'test_email');
+        }}
+      >
+        Store in holdstrong
+      </Button>
+      <Button
+        onClick={async () => {
+          const email = await strongholdStorage.load('email');
+          setEmail(email);
+        }}
+      >
+        Read from holdstrong storage
+      </Button>
+      <Button onClick={async () => await strongholdStorage.reset()}>
+        Clear storage
+      </Button>
+      <p>email: {email}</p>
       {showToast && <UpdateToast />}
     </main>
   );
